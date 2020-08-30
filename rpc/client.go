@@ -296,8 +296,10 @@ func (c *Client) CallContext(ctx context.Context, result interface{}, method str
 	op := &requestOp{ids: []json.RawMessage{msg.ID}, resp: make(chan *jsonrpcMessage, 1)}
 
 	if c.isHTTP {
+		fmt.Printf("CONG 1 %s\n", method)
 		err = c.sendHTTP(ctx, op, msg)
 	} else {
+		fmt.Printf("CONG 2 %s\n", method)
 		err = c.send(ctx, op, msg)
 	}
 	if err != nil {
@@ -309,10 +311,13 @@ func (c *Client) CallContext(ctx context.Context, result interface{}, method str
 	case err != nil:
 		return err
 	case resp.Error != nil:
+		fmt.Printf("CONG 3 %s %s\n", method, resp.Error.Message)
 		return resp.Error
 	case len(resp.Result) == 0:
+		fmt.Printf("CONG 4 %s %s\n", method, resp.Result)
 		return ErrNoResult
 	default:
+		fmt.Printf("CONG 5 %s %s\n", method, resp.Result)
 		return json.Unmarshal(resp.Result, &result)
 	}
 }

@@ -317,7 +317,7 @@ func (c *Client) CallContext(ctx context.Context, result interface{}, method str
 		fmt.Printf("CONG 4 %s %s\n", method, resp.Result)
 		return ErrNoResult
 	default:
-		fmt.Printf("CONG 5 %s %s\n", method, resp.Result)
+		fmt.Printf("CONG 5 %s %v\n", method, resp)
 		return json.Unmarshal(resp.Result, &result)
 	}
 }
